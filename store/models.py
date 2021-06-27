@@ -9,7 +9,7 @@ class Customer(models.Model):
 	phone = models.CharField(max_length=12)
 
 	def __str__(self):
-		return f"{self.firstName}.capitalize() {self.lastName}.capitalize()"
+		return (f"{self.firstName} {self.lastName}").title()
 
 	class Meta:
 		db_table = "customer"
@@ -19,9 +19,19 @@ class Product(models.Model):
 	price = models.FloatField()
 	description = models.TextField(max_length=2000, null=True, blank=True)
 	is_digital = models.BooleanField(default=False, null=True, blank=True)
+	image = models.ImageField(null=True, blank=True)
 
 	def __str__(self):
-		return f"{self.name}"
+		return f"{self.name}".title()
+
+	@property
+	def imageURL(self):
+		try:
+			url = self.image.url
+		except:
+			url = 'images/placeholder.png'
+		return url
+	
 
 	class Meta:
 		db_table = "product"
@@ -44,6 +54,8 @@ class OrderItem(models.Model):
 	quantity = models.IntegerField(default=0, null=True, blank=True)
 	date_added = models.DateTimeField(auto_now_add=True)
 
+	def __str__(self):
+		return f"Product: {self.product} Quantity: {self.quantity}"
 	class Meta:
 		db_table = "order_item"
 

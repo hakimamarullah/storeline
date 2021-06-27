@@ -2,6 +2,7 @@ asgiref
 dj-database-url
 Django
 gunicorn
+pillow
 psycopg2
 pytz
 sqlparse
