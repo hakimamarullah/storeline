@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import *
 import datetime
 # Create your views here.
 def index(request):
@@ -7,7 +8,11 @@ def index(request):
 	return render(request,'store/index.html',context)
 
 def store(request):
-	return render(request,'store/store.html')
+	product = Product.objects.all()
+	context ={
+		'products':product
+	}
+	return render(request,'store/store.html',context)
 
 def cart(request):
 	return render(request, 'store/cart.html')
