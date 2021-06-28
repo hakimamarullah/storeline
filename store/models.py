@@ -34,7 +34,7 @@ class Product(models.Model):
 		return url
 	@property
 	def price_rupiah(self):
-		return rupiah_format(int(str(self.price).split(".")[0]),True,0)
+		return rupiah_format(int(str(self.price).split(".")[0]))
 	
 
 	class Meta:
@@ -62,7 +62,7 @@ class Order(models.Model):
 
 	@property
 	def get_cart_total_rupiah(self):
-		return rupiah_format(int(str(self.get_cart_total).split(".")[0]),True,0)
+		return rupiah_format(int(str(self.get_cart_total).split(".")[0]))
 
 	class Meta:
 		db_table = "order"
@@ -83,7 +83,7 @@ class OrderItem(models.Model):
 
 	@property
 	def get_total_rupiah(self):
-		return rupiah_format(int(str(self.get_total).split(".")[0]), True, 0)
+		return rupiah_format(int(str(self.get_total).split(".")[0]))
 
 
 	class Meta:
