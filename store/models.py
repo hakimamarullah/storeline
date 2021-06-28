@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from .rupiah import rupiah_format
 
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True, blank=True, on_delete= models.CASCADE)
@@ -31,6 +32,9 @@ class Product(models.Model):
 		except:
 			url = 'images/placeholder.png'
 		return url
+	@property
+	def price_rupiah(self):
+		return rupiah_format(int(str(self.price).split(".")[0]),True,0)
 	
 
 	class Meta:
@@ -45,6 +49,21 @@ class Order(models.Model):
 	def __str__(self):
 		return f"{str(self.id)}"
 
+	@property
+	def get_cart_total(self):
+		orderItem = self.orderitem_set.all()
+		total = sum([item.get_total for item in orderItem])
+		return total
+
+	@property
+	def get_cart_items(self):
+		orderItem = self.orderitem_set.all()
+		return sum([item.quantity for item in orderItem])
+
+	@property
+	def get_cart_total_rupiah(self):
+		return rupiah_format(int(str(self.get_cart_total).split(".")[0]),True,0)
+
 	class Meta:
 		db_table = "order"
 
@@ -56,6 +75,17 @@ class OrderItem(models.Model):
 
 	def __str__(self):
 		return f"Product: {self.product} Quantity: {self.quantity}"
+
+	@property
+	def get_total(self):
+		total = self.quantity * self.product.price
+		return total
+
+	@property
+	def get_total_rupiah(self):
+		return rupiah_format(int(str(self.get_total).split(".")[0]), True, 0)
+
+
 	class Meta:
 		db_table = "order_item"
 
