@@ -41,7 +41,7 @@ class Product(models.Model):
 		db_table = "product"
 
 class Order(models.Model):
-	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+	customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
 	date_ordered = models.DateTimeField(auto_now_add=True)
 	complete = models.BooleanField(default=False)
 	transaction_id = models.CharField(max_length=100, null=True)
@@ -64,12 +64,22 @@ class Order(models.Model):
 	def get_cart_total_rupiah(self):
 		return rupiah_format(int(str(self.get_cart_total).split(".")[0]))
 
+	@property
+	def shipping(self):
+		is_shipping = False
+		shipping = []
+		for item in self.orderitem_set.all():
+			shipping.append(False) if item.product.is_digital else shipping.append(True)
+		for ship in shipping:
+			is_shipping = is_shipping or ship
+		return is_shipping
+
 	class Meta:
 		db_table = "order"
 
 class OrderItem(models.Model):
-	product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-	order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+	product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+	order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
 	quantity = models.IntegerField(default=0, null=True, blank=True)
 	date_added = models.DateTimeField(auto_now_add=True)
 
@@ -89,9 +99,8 @@ class OrderItem(models.Model):
 	class Meta:
 		db_table = "order_item"
 
-class ShippingAddress(models.Model):
-	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
-	order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True)
+class CustomerAddress(models.Model):
+	customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
 	address = models.CharField(max_length=200)
 	kelurahan = models.CharField(max_length=50)
 	kecamatan = models.CharField(max_length=50)
@@ -99,12 +108,36 @@ class ShippingAddress(models.Model):
 	provinsi = models.CharField(max_length=50)
 	kode_pos = models.CharField(max_length=15)
 	date_added = models.DateTimeField(auto_now_add=True)
+	is_default = models.BooleanField(default=False)
 
 	def __str__(self):
 		return f"{str(self.address).title()}"
 
 	class Meta:
+		db_table = "customer_address"
+
+class ShippingAddress(models.Model):
+	customer_address = models.ForeignKey(CustomerAddress, on_delete=models.CASCADE, null=True, blank=True)
+	order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
+
+	def __str__(self):
+		return f"{str(self.customer_address.address).title()}"
+
+	class Meta:
 		db_table = "shipping_address"
+
+class Pesanan(models.Model):
+	customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+	order = models.ForeignKey(Order, on_delete=models.CASCADE)
+	shipping = models.ForeignKey(ShippingAddress, on_delete=models.CASCADE, null=True, blank=True)
+	status = models.CharField(max_length=5, null=True, blank=True)
+	date_ordered = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return f"Name: {str(self.customer.firstName).title()} ID: {self.customer.id}"
+
+	class Meta:
+		db_table = "pesanan"
 
 
 

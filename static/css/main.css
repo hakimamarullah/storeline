@@ -65,6 +65,12 @@ h1,h2,h3,h4,h5,h6{
 	display: inline-block;
 	padding: 5px;
 }
+#form-field{
+	width:25px;
+	display: inline-block;
+	padding: 5px;
+}
+
 
 .cart-row{
 	display: flex;
@@ -98,7 +104,10 @@ h1,h2,h3,h4,h5,h6{
 	opacity: .6;
 }
 
-
+#user-profile{
+	margin-left: 100px;
+	display: flex;
+}
 .hidden{
 	display: none!important;
 }
