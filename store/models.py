@@ -7,7 +7,7 @@ class Customer(models.Model):
 	firstName = models.CharField(max_length=50, null=True)
 	lastName = models.CharField(max_length=50, null=True)
 	email = models.EmailField()
-	phone = models.CharField(max_length=12)
+	phone = models.CharField(max_length=12, null=True, blank=True)
 
 	def __str__(self):
 		return (f"{self.firstName} {self.lastName}").title()
@@ -35,6 +35,10 @@ class Product(models.Model):
 	@property
 	def price_rupiah(self):
 		return rupiah_format(int(str(self.price).split(".")[0]))
+
+	@property
+	def is_digital_category(self):
+		return "Non-Digital" if not self.is_digital else "Digital"
 	
 
 	class Meta:
@@ -125,12 +129,19 @@ class ShippingAddress(models.Model):
 
 	class Meta:
 		db_table = "shipping_address"
+		verbose_name_plural="ShippingAddresses"
 
 class Pesanan(models.Model):
+	CHOICES =(
+		("PRO","On Process"),
+		("PND","Pending"),
+		("COM","Complete"),
+		("CNC","Canceled"),
+	)
 	customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 	order = models.ForeignKey(Order, on_delete=models.CASCADE)
 	shipping = models.ForeignKey(ShippingAddress, on_delete=models.CASCADE, null=True, blank=True)
-	status = models.CharField(max_length=5, null=True, blank=True)
+	status = models.CharField(max_length=15, choices=CHOICES, default="PND")
 	date_ordered = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
@@ -138,6 +149,7 @@ class Pesanan(models.Model):
 
 	class Meta:
 		db_table = "pesanan"
+		verbose_name_plural = "pesanan"
 
 
 

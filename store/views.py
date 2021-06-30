@@ -1,16 +1,28 @@
 from django.shortcuts import render
 from .models import *
 from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
 import json
+from django.http import HttpResponseServerError
 import datetime
 # Create your views here.
 def store(request):
 	product = Product.objects.all()
 	if request.user.is_authenticated:
-		customer = request.user.customer
-		order, created = Order.objects.get_or_create(customer=customer, complete=False)
-		items = order.orderitem_set.all()
-		cartItem = order.get_cart_items
+		try:
+			customer = request.user.customer
+			order, created = Order.objects.get_or_create(customer=customer, complete=False)
+			items = order.orderitem_set.all()
+			cartItem = order.get_cart_items
+		except ObjectDoesNotExist:
+			customer = Customer.objects.create(user=request.user,
+				firstName=request.user.first_name,
+				lastName=request.user.last_name,
+				email=request.user.email)
+			order, created = Order.objects.get_or_create(customer=customer, complete=False)
+			items = order.orderitem_set.all()
+			cartItem = order.get_cart_items
+
 	else:
 		items=[]
 		order={'get_cart_total':0, 'get_cart_items':0, 'shipping': False}
@@ -104,10 +116,33 @@ def processOrder(request):
 				provinsi=ship['provinsi'],
 				kode_pos=ship['kode_pos'],)
 			shipping = ShippingAddress.objects.create(customer_address=customer_address, order=order)
-			Pesanan.objects.create(customer=customer, order=order, shipping=shipping, status="PRO")
+			Pesanan.objects.create(customer=customer, order=order, shipping=shipping)
 
 
 	return JsonResponse("Ordered", safe=False)
+
+def viewProducts(request, id):
+	product = Product.objects.get(id=id)
+	if request.user.is_authenticated:
+		try:
+			customer = request.user.customer
+			order, created = Order.objects.get_or_create(customer=customer, complete=False)
+			cartItem = order.get_cart_items
+		except ObjectDoesNotExist:
+			customer = Customer.objects.create(user=request.user,
+				firstName=request.user.first_name,
+				lastName=request.user.last_name,
+				email=request.user.email)
+			order, created = Order.objects.get_or_create(customer=customer, complete=False)
+			cartItem = order.get_cart_items
+
+	else:
+		cartItem={'get_cart_items':0}
+	context ={
+		'product':product,
+		'cartItem': cartItem
+	}
+	return render(request,'store/view-product.html',context)
 
 
 

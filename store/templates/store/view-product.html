@@ -1,0 +1,23 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+		<div class="col-lg-4">
+			<img class="thumbnail" src="{{ product.imageURL}}">
+			<div class="box-element product">
+				<h6><strong>{{ product.name.title }}</strong></h6>
+				<h4 id="price-view"><strong>{{ product.price_rupiah }}</strong></h4>
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<div class="box-element product">
+				<p>Product Type: {{product.is_digital_category}}</p>
+				<hr>
+				<h5><strong>Description</strong></h5>
+				<p>{{ product.description }}</p>
+				 <button  data-product={{product.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+				<a class="btn btn-outline-success" href="{% url 'store:store'%}">Back</a>
+			</div>
+		</div>
+</div>
+{% endblock %}
