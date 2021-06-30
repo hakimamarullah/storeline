@@ -105,17 +105,21 @@ class OrderItem(models.Model):
 
 class CustomerAddress(models.Model):
 	customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
-	address = models.CharField(max_length=200)
-	kelurahan = models.CharField(max_length=50)
-	kecamatan = models.CharField(max_length=50)
-	kabkot = models.CharField(max_length=50)
-	provinsi = models.CharField(max_length=50)
-	kode_pos = models.CharField(max_length=15)
-	date_added = models.DateTimeField(auto_now_add=True)
-	is_default = models.BooleanField(default=False)
+	address = models.CharField(max_length=200, null=True)
+	kelurahan = models.CharField(max_length=50, null=True)
+	kecamatan = models.CharField(max_length=50, null=True)
+	kabkot = models.CharField(max_length=50, null=True)
+	provinsi = models.CharField(max_length=50, null=True)
+	kode_pos = models.CharField(max_length=15, null=True)
+	date_added = models.DateTimeField(auto_now_add=True, null=True)
+	is_default = models.BooleanField(default=False, null=True)
 
 	def __str__(self):
 		return f"{str(self.address).title()}"
+
+	@property
+	def is_default_address(self):
+		return "" if not self.is_default else "Default"
 
 	class Meta:
 		db_table = "customer_address"

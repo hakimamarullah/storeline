@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-lg-4">
+			<div class="box-element">
+				<form>
+					<div id="user-info">
+                        <hr>
+                        <p><b>PROFILE:</b></p>
+                        <hr>
+                        <div class="form-field">
+                        	<label for="username">Username:</label>
+                            <input id="username"class="form-control" type="username" disabled="disabled" name="username" placeholder="{{user.user}}" readonly>
+                            
+                        </div>
+                        <div class="form-field">
+                        	<label for="email">Email:</label>
+                            <input id="email" class="form-control" type="email" disabled="disabled" name="email" placeholder="{{user.email}}" readonly>
+                             
+                        </div>
+                        <div class="form-field">
+                        	<label for="FirstName">First Name:</label>
+                            <input class="form-control" type="text" disabled="disabled" name="firstName" placeholder="{{user.firstName}}" readonly>
+                             
+                        </div>
+                        <div class="form-field">
+                        	<label for="lastName">Last Name:</label>
+                            <input class="form-control" type="text" disabled="disabled" name="lastName" placeholder="{{user.lastName}}" readonly>
+                             
+                        </div>
+                        <div class="form-field">
+                        	<label for="phone">Phone:</label>
+                            <input class="form-control" type="text" disabled="disabled" name="phone" placeholder="{{user.phone}}" readonly>
+                             
+                        </div>
+                        <hr>
+                        <input id="form-profile" class="btn btn-success btn-block" type="submit" value="Edit">
+                    </div>
+				</form>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="box-element">
+				<p><b>Address:</b></p>
+				<hr>
+				{% for address in addresses %}
+					<div class="row">
+						<div class="col-md-4">
+							<p>{{address.address.title}}, {{address.kelurahan.title}}, {{address.kecamatan.title}}, {{address.kabkot.title}}, {{address.provinsi.title}}
+							</p>
+						</div>
+						<div class="col-md-4">
+							<span style="display:block border: 2px;">{{ address.is_default_address}}</span>
+						</div>
+					</div>
+					<hr>
+				{% endfor %}
+				<a id="form-address" class="btn btn-outline-secondary" href="">Add</a>
+				<a id="form-address" class="btn btn-outline-success" href="">Edit</a> 
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

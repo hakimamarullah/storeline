@@ -26,6 +26,9 @@ footer {
   color: white;
   text-align: center;
 }
+.acc{
+	padding-left: 100px;
+}
 .box-element{
 	box-shadow:hsl(0, 0%, 80%) 0 0 16px;
 	background-color: #fff;
@@ -87,7 +90,7 @@ footer {
 }
 #form-field{
 	width:25px;
-	display: inline-block;
+	display: inline-flex;
 	padding: 5px;
 }
 
