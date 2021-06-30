@@ -5,7 +5,7 @@
      <div class="col-lg-6">
          <div class="box-element" id="form-wrapper">
              <form id="form">
-                    {% if not user.is_authenticated%}
+                    {% if not request.user.is_authenticated%}
                     <div id="user-info">
                         <div class="form-field">
                             <input required class="form-control" type="text" name="name" placeholder="Name..">
@@ -13,10 +13,13 @@
                         <div class="form-field">
                             <input required class="form-control" type="email" name="email" placeholder="Email..">
                         </div>
+                        <div class="form-field">
+                            <input required class="form-control" type="phone" name="phone" placeholder="Phone..">
+                        </div>
                     </div>
                     {% endif %}
 
-                 
+                    {% if not address %}
                     <div id="shipping-info">
                         <hr>
                         <p><b>Shipping Information:</b></p>
@@ -44,7 +47,8 @@
                             <label class="form-check-label" for="defaultCheck1">Set As Default</label>
                         </div>
                     </div>
-               
+                    {% endif %}
+
                     <hr>
                     <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
                     

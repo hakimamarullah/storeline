@@ -106,6 +106,8 @@ def processOrder(request):
 		order.save()
 
 		ship= data['shipping']
+		default_true = True if ship['is_default']=="True" else False
+		print(default_true)
 		if (order.shipping):
 			customer_address, create = CustomerAddress.objects.get_or_create(
 				customer = customer,
@@ -114,7 +116,8 @@ def processOrder(request):
 				kecamatan=ship['kecamatan'],
 				kabkot=ship['kabkot'],
 				provinsi=ship['provinsi'],
-				kode_pos=ship['kode_pos'],)
+				kode_pos=ship['kode_pos'],
+				is_default=default_true)
 			shipping = ShippingAddress.objects.create(customer_address=customer_address, order=order)
 			Pesanan.objects.create(customer=customer, order=order, shipping=shipping)
 

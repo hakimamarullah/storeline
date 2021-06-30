@@ -1,18 +1,19 @@
-CREATE OR REPLACE FUNCTION add_to_pesanan()
+CREATE OR REPLACE FUNCTION update_default()
 RETURNS trigger AS
 $$
-	DECLARE
-		shipping_address_id INTEGER;
 	BEGIN
-		SELECT a.customer_address_id  INTO shipping_address_id FROM "order" JOIN SHIPPING_ADDRESS a
-		ON a.order_id = NEW.id;
-		INSERT INTO PESANAN(status, customer_id, order_id, shipping_id, date_ordered) VALUES('PRO',NEW.customer_id, NEW.id, shipping_address_id, NEW.date_ordered);
-		RETURN NEW;
+		IF(TG_OP != 'DELETE') THEN
+			UPDATE CUSTOMER_ADDRESS SET is_default = FALSE WHERE id != NEW.id;
+			RETURN NEW;
+		ELSE
+			UPDATE CUSTOMER_ADDRESS SET is_default = FALSE;
+			RETURN OLD;
+		END IF;
 	END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER add_new_order
-AFTER INSERT OR UPDATE OF complete
-ON "order"
-FOR EACH ROW EXECUTE PROCEDURE add_to_pesanan();
+CREATE TRIGGER set_default_address
+AFTER INSERT OR DELETE OR UPDATE OF is_default
+ON CUSTOMER_ADDRESS
+FOR EACH ROW EXECUTE PROCEDURE update_default();
