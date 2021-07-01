@@ -85,12 +85,12 @@ DATABASES = {
         'OPTIONS': {
             'options': '-c search_path=store,public'
         },
-        'NAME': "d77bnf85ts5kur",
-        'USER': "ppawhkhykbpzcg",
-        'PASSWORD': "58ece3c10edde7681d90b6bb6baafb67c95dc9cfd5818eade8e40d457fe41b63",
-        'HOST': 'ec2-34-195-143-54.compute-1.amazonaws.com',
+        'NAME': "d5pbe9hjcomhfe",
+        'USER': "neqljovmdrtjoc",
+        'PASSWORD': "60f42dee7a5ee2518093517403cbad92ae39043617008eda73d254fce252447e",
+        'HOST': 'ec2-54-158-232-223.compute-1.amazonaws.com',
         'PORT': '5432',
-        'URL' : 'postgres://ppawhkhykbpzcg:58ece3c10edde7681d90b6bb6baafb67c95dc9cfd5818eade8e40d457fe41b63@ec2-34-195-143-54.compute-1.amazonaws.com:5432/d77bnf85ts5kur',
+        'URL' : 'postgres://neqljovmdrtjoc:60f42dee7a5ee2518093517403cbad92ae39043617008eda73d254fce252447e@ec2-54-158-232-223.compute-1.amazonaws.com:5432/d5pbe9hjcomhfe',
     }
 }
 
