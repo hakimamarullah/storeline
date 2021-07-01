@@ -95,6 +95,7 @@ DATABASES = {
 }
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 if PRODUCTION:
     DATABASES['default'] = dj_database_url.config()
     DATABASES['default']['OPTIONS'] = {'options': '-c search_path=store,public'}
