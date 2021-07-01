@@ -30,7 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['storeline.herokuapp.com','*']
 
-
+AUTH_USER_MODEL = 'accounts.User'
 # Application definition
 
 INSTALLED_APPS = [

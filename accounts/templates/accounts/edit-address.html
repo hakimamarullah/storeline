@@ -6,7 +6,7 @@
 				<form method="POST" action="{% url 'accounts:edit-address' id=id %}">
 					{% csrf_token %}
 					<div id="new-address">
-	                        <p><b>Add Address:</b></p>
+	                        <p><b>Edit Address:</b></p>
 	                        <hr>
 	                        <p>{{address.kelurahan}}</p>
 	                        <div class="form-field">
@@ -30,7 +30,7 @@
 	                            <input class="form-check-input" name="is_default" type="checkbox" value="True" id="defaultCheck1">
 	                            <label class="form-check-label" for="defaultCheck1">Set As Default</label>
 	                        </div>
-	                        <button id="submit-address" class="btn btn-outline-secondary" type="submit">Add</btn>
+	                        <button id="submit-address" class="btn btn-outline-secondary" type="submit">Submit</button>
 	                </div>
                 </form>
 			</div>

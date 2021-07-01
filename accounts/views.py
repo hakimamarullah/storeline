@@ -5,7 +5,17 @@ from django.shortcuts import get_object_or_404
 import json
 from django.db.models import Q
 from django.http import JsonResponse
+from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
+
+def login(request):
+	context={}
+	return render(request, 'accounts/login.html',context)
+
+def register(request):
+	context={}
+	return render(request, 'accounts/register.html',context)
+
 def accounts(request):
 	customer = request.user.customer
 	order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -46,15 +56,13 @@ def editAddress(request, id):
 	if request.method == "GET":
 		address = CustomerAddress.objects.get(id=id)
 		customer = request.user.customer
-		id = id
 		order, created = Order.objects.get_or_create(customer=customer, complete=False)
 		cartItem = order.get_cart_items
 		context ={
-		'cartItem': cartItem,
-		'address': address,
-		'id':id
+			'cartItem': cartItem,
+			'address': address,
+			'id':id
 		}
-		print(address.kelurahan)
 		return render(request, 'accounts/edit-address.html', context)
 	elif request.method=="POST":
 		print(request.POST)
