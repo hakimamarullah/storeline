@@ -4,54 +4,44 @@
  <div class="row">
      <div class="col-lg-6">
          <div class="box-element" id="form-wrapper">
+            {% if messages %}
+                {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+            {% if not address %}
+            <p><b>You have no address yet</b></p>
+            <a id="add-address" class="btn btn-outline-secondary" href="{% url 'accounts:accounts' %}">Add</a>
+            {% else %}
+            <p><b>Shipping Address:</b></p>
+            <hr>
+                <p>{{address.address.title}}, {{address.kelurahan.title}}, {{address.kecamatan.title}}, {{address.kabkot.title}}, {{address.provinsi.title}}, {{address.kode_pos.title}}</p>
+                <a id="add-address" class="btn btn-outline-secondary" href="{% url 'accounts:accounts' %}">Change</a>
              <form id="form">
-                    {% if not request.user.is_authenticated%}
-                    <div id="user-info">
-                        <div class="form-field">
-                            <input required class="form-control" type="text" name="name" placeholder="Name..">
+                        <div id="shipping-info" class="hidden">
+                            <div class="form-field">
+                                <input class="form-control" value="{{address.address.title}}" type="text" name="address" placeholder="Address..">
+                            </div>
+                            <div class="form-field">
+                                <input class="form-control" value="{{address.kelurahan.title}}" type="text" name="kelurahan" placeholder="Kelurahan..">
+                            </div>
+                            <div class="form-field">
+                                <input class="form-control" value="{{address.kecamatan.title}}" type="text" name="kecamatan" placeholder="Kecamatan..">
+                            </div>
+                            <div class="form-field">
+                                <input class="form-control" value="{{address.kabkot.title}}" type="text" name="kabkot" placeholder="Kabupaten/Kota..">
+                            </div>
+                            <div class="form-field">
+                                <input class="form-control" value="{{address.provinsi.title}}" type="text" name="provinsi" placeholder="Provinsi..">
+                            </div>
+                            <div class="form-field">
+                                <input class="form-control" value="{{address.kode_pos.title}}" type="text" name="kode_pos" placeholder="Kode Pos..">
+                            </div>
                         </div>
-                        <div class="form-field">
-                            <input required class="form-control" type="email" name="email" placeholder="Email..">
-                        </div>
-                        <div class="form-field">
-                            <input required class="form-control" type="phone" name="phone" placeholder="Phone..">
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    {% if not address %}
-                    <div id="shipping-info">
-                        <hr>
-                        <p><b>Shipping Information:</b></p>
-                        <hr>
-                        <div class="form-field">
-                            <input class="form-control" type="text" name="address" placeholder="Address..">
-                        </div>
-                        <div class="form-field">
-                            <input class="form-control" type="text" name="kelurahan" placeholder="Kelurahan..">
-                        </div>
-                        <div class="form-field">
-                            <input class="form-control" type="text" name="kecamatan" placeholder="Kecamatan..">
-                        </div>
-                        <div class="form-field">
-                            <input class="form-control" type="text" name="kabkot" placeholder="Kabupaten/Kota..">
-                        </div>
-                        <div class="form-field">
-                            <input class="form-control" type="text" name="provinsi" placeholder="Provinsi..">
-                        </div>
-                        <div class="form-field">
-                            <input class="form-control" type="text" name="kode_pos" placeholder="Kode Pos..">
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" name="is_default" type="checkbox" value="True" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">Set As Default</label>
-                        </div>
-                    </div>
                     {% endif %}
 
                     <hr>
                     <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
-                    
                 </form>
          </div>
          <br>
@@ -83,11 +73,14 @@
      </div>
  </div>
  <script type="text/javascript">
-     let shipping = '{{ orders.shipping }}'
-     var total = '{{ orders.get_cart_total }}'
-     
-     if (shipping=="False"){
-        document.getElementById("shipping-info").innerHTML= ''
+    let shipping = '{{ orders.shipping }}'
+    let total = '{{ orders.get_cart_total }}'
+    let id = '{{address.id}}'
+    console.log(id)
+    let address_id = {'id': id}
+    let price ={'total': total}
+    if (id == ''){
+        document.getElementById("form-button").classList.add("hidden")
     }
 
     let form = document.getElementById("form")
@@ -101,12 +94,6 @@
     })
 
     function submitForm(){
-        let userData = {
-            'name': '{{request.user.customer.firstName}}',
-            'email': '{{request.user.customer.email}}',
-            'total': total
-        }
-
         let shippingInfo ={
             'address': null,
             'kelurahan': null,
@@ -114,7 +101,6 @@
             'kabkot': null,
             'provinsi': null,
             'kode_pos': null,
-            'is_default': "False"
         }
 
         if (shipping != "False"){
@@ -124,12 +110,7 @@
             shippingInfo.kabkot = form.kabkot.value
             shippingInfo.provinsi = form.provinsi.value
             shippingInfo.kode_pos = form.kode_pos.value
-            shippingInfo.is_default = form.is_default.value
             
-        }
-        if (user == "AnonymousUser"){
-            userData.name = form.name.value
-            userData.email = form.email.value
         }
 
         url = '/process-order/'
@@ -140,7 +121,7 @@
             'Content-Type':'application/json',
             'X-CSRFToken': csrftoken,
         },
-        body: JSON.stringify({"form":userData, 'shipping':shippingInfo})
+        body: JSON.stringify({'shipping':shippingInfo,'address_id': address_id, 'price': price})
     })
 
     .then((response)=>{

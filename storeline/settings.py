@@ -94,7 +94,7 @@ DATABASES = {
     }
 }
 
-
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 if PRODUCTION:
     DATABASES['default'] = dj_database_url.config()
     DATABASES['default']['OPTIONS'] = {'options': '-c search_path=store,public'}

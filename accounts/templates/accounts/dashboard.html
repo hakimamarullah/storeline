@@ -5,34 +5,33 @@
 	<div class="row">
 		<div class="col-lg-4">
 			<div class="box-element">
-				<form>
+				<form method="POST" action="" id="form1">
 					<div id="user-info">
-                        <hr>
                         <p><b>PROFILE:</b></p>
                         <hr>
                         <div class="form-field">
                         	<label for="username">Username:</label>
-                            <input id="username"class="form-control" type="username" disabled="disabled" name="username" placeholder="{{user.user}}" readonly>
+                            <input id="username"class="form-control" type="username" disabled="disabled" name="username" value="{{user.user}}">
                             
                         </div>
                         <div class="form-field">
                         	<label for="email">Email:</label>
-                            <input id="email" class="form-control" type="email" disabled="disabled" name="email" placeholder="{{user.email}}" readonly>
+                            <input id="email" class="form-control" type="email" disabled="disabled" name="email" value="{{user.email}}">
                              
                         </div>
                         <div class="form-field">
                         	<label for="FirstName">First Name:</label>
-                            <input class="form-control" type="text" disabled="disabled" name="firstName" placeholder="{{user.firstName}}" readonly>
+                            <input class="form-control" type="text" disabled="disabled" name="firstName" value="{{user.firstName}}">
                              
                         </div>
                         <div class="form-field">
                         	<label for="lastName">Last Name:</label>
-                            <input class="form-control" type="text" disabled="disabled" name="lastName" placeholder="{{user.lastName}}" readonly>
+                            <input class="form-control" type="text" disabled="disabled" name="lastName" value="{{user.lastName}}">
                              
                         </div>
                         <div class="form-field">
                         	<label for="phone">Phone:</label>
-                            <input class="form-control" type="text" disabled="disabled" name="phone" placeholder="{{user.phone}}" readonly>
+                            <input class="form-control" type="text" disabled="disabled" name="phone" value="{{user.phone}}">
                              
                         </div>
                         <hr>
@@ -46,21 +45,159 @@
 				<p><b>Address:</b></p>
 				<hr>
 				{% for address in addresses %}
-					<div class="row">
-						<div class="col-md-4">
-							<p>{{address.address.title}}, {{address.kelurahan.title}}, {{address.kecamatan.title}}, {{address.kabkot.title}}, {{address.provinsi.title}}
+						<div class="address-row">
+							<p style="flex:5">{{address.address.title}}, {{address.kelurahan.title}}, {{address.kecamatan.title}}, {{address.kabkot.title}}, {{address.provinsi.title}}, {{address.kode_pos}}
 							</p>
+							{% if address.is_default %}
+							<kbd id="default-text" style="flex:2">{{ address.is_default_address}}</kbd>
+							{% endif %}
+							<br>
+							<a id="del-addr" name="del" value="{{address.id}}" onclick="delAddress(this)"><i class='fas fa-trash-alt' style='font-size:15px;color:red'></i></a>
+							<a id="edit-addr" href="{% url 'accounts:edit-address' id=address.id %} "><i class='fas fa-pencil-alt' style='font-size:15px;color:black'></i></a>
+							{% if not address.is_default %}
+							<a id="set-default" class="btn btn-outline-success btn-sm" value="{{address.id}}" onclick="editAddress(this)">Use</a>
+							{% endif %}
 						</div>
-						<div class="col-md-4">
-							<span style="display:block border: 2px;">{{ address.is_default_address}}</span>
-						</div>
-					</div>
 					<hr>
 				{% endfor %}
-				<a id="form-address" class="btn btn-outline-secondary" href="">Add</a>
-				<a id="form-address" class="btn btn-outline-success" href="">Edit</a> 
+				<a id="form-address1" class="btn btn-outline-secondary bt-xs">Add</a>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="box-element hidden" id="form-wrapper">
+				<form id="form">
+					<div id="new-address">
+	                        <p><b>Add Address:</b></p>
+	                        <hr>
+	                        <div class="form-field">
+	                            <input class="form-control" type="text" name="address" placeholder="Address..">
+	                        </div>
+	                        <div class="form-field">
+	                            <input class="form-control" type="text" name="kelurahan" placeholder="Kelurahan..">
+	                        <div class="form-field">
+	                            <input class="form-control" type="text" name="kecamatan" placeholder="Kecamatan..">
+	                        </div>
+	                        <div class="form-field">
+	                            <input class="form-control" type="text" name="kabkot" placeholder="Kabupaten/Kota..">
+	                        </div>
+	                        <div class="form-field">
+	                            <input class="form-control" type="text" name="provinsi" placeholder="Provinsi..">
+	                        </div>
+	                        <div class="form-field">
+	                            <input class="form-control" type="text" name="kode_pos" placeholder="Kode Pos..">
+	                        </div>
+	                        <div class="form-check">
+	                            <input class="form-check-input" name="is_default" type="checkbox" value="True" id="defaultCheck1">
+	                            <label class="form-check-label" for="defaultCheck1">Set As Default</label>
+	                        </div>
+	                        <a id="submit-address" class="btn btn-outline-secondary">Add</a>
+	                </div>
+                </form>
+                
 			</div>
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+    let btn = document.getElementById("form-address1")
+
+    btn.addEventListener('click', function() {
+        document.getElementById("form-wrapper").classList.remove("hidden")
+        document.getElementById("form-address1").classList.add("hidden")
+    })
+    document.getElementById("submit-address").addEventListener('click', function(e){
+        submitForm()
+    })
+
+
+    function submitForm(){
+        let newAddress ={
+            'address': null,
+            'kelurahan': null,
+            'kecamatan': null,
+            'kabkot': null,
+            'provinsi': null,
+            'kode_pos': null,
+            'is_default': "False"
+        }
+	    let form = document.getElementById("form")
+	    newAddress.address = form.address.value
+	    newAddress.kelurahan = form.kelurahan.value
+	    newAddress.kecamatan = form.kecamatan.value
+	    newAddress.kabkot = form.kabkot.value
+	    newAddress.provinsi = form.provinsi.value
+	    newAddress.kode_pos = form.kode_pos.value
+	    newAddress.is_default = form.is_default.value
+	    
+
+	    url = '/add-address/'
+
+	    fetch(url,{
+	        method:'POST',
+	        headers:{
+	            'Content-Type':'application/json',
+	            'X-CSRFToken': csrftoken,
+	        },
+	        body: JSON.stringify({'newAddress':newAddress})
+	    })
+
+	    .then((response)=>{
+	        return response.json()
+	    })
+
+	    .then((data)=>{
+	        console.log(data)
+	        alert(data)
+	        window.location.href = "{% url 'accounts:accounts' %}"
+	    })
+    }
+
+    function delAddress(el){
+    	id= el.getAttribute("value")
+    	console.log(id)
+    	url = '/del-address/' + id
+
+	    fetch(url,{
+	        method:'DELETE',
+	        headers:{
+	            'Content-Type':'application/json',
+	            'X-CSRFToken': csrftoken,
+	        }
+	    })
+
+	    .then((response)=>{
+	        return response.json()
+	    })
+
+	    .then((data)=>{
+	        console.log(data)
+	        alert(data)
+	        window.location.href = "{% url 'accounts:accounts' %}"
+	    })
+    }
+
+
+    //editAddress
+    function editAddress(el){
+    	id= el.getAttribute("value")
+    	url = '/edit-address/' + id
+
+	    fetch(url,{
+	        method:'PUT',
+	        headers:{
+	            'Content-Type':'application/json',
+	            'X-CSRFToken': csrftoken,
+	        }
+	    })
+
+	    .then((response)=>{
+	        return response.json()
+	    })
+
+	    .then((data)=>{
+	        alert(data)
+	        window.location.reload()
+	    })
+    }
+ </script>
 {% endblock content %}

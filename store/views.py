@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from .models import *
-from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 import json
-from django.http import HttpResponseServerError
+from django.http import HttpResponseServerError, JsonResponse
 import datetime
+from django.contrib import messages
 # Create your views here.
 def store(request):
 	product = Product.objects.all()
@@ -56,7 +56,13 @@ def checkout(request):
 		order, created = Order.objects.get_or_create(customer=customer, complete=False)
 		items = order.orderitem_set.all()
 		cartItem = order.get_cart_items
-		address = CustomerAddress.objects.filter(customer=customer, is_default=True)
+		try:
+			address= CustomerAddress.objects.get(customer=customer, is_default=True)
+		except ObjectDoesNotExist:
+			address=[]
+			messages.add_message(request, messages.INFO, 'Silakan tambahkan alamat untuk melanjutkan')
+
+
 	else:
 		items=[]
 		address = []
@@ -98,7 +104,7 @@ def processOrder(request):
 		customer = request.user.customer
 		transaction_id = datetime.datetime.now().timestamp()
 		order, create = Order.objects.get_or_create(customer=customer, complete=False)
-		total = float(data['form']['total'])
+		total = float(data['price']['total'])
 		order.transaction_id = transaction_id
 
 		if total == order.get_cart_total:
@@ -106,18 +112,9 @@ def processOrder(request):
 		order.save()
 
 		ship= data['shipping']
-		default_true = True if ship['is_default']=="True" else False
-		print(default_true)
+		print(ship)
 		if (order.shipping):
-			customer_address, create = CustomerAddress.objects.get_or_create(
-				customer = customer,
-				address=ship['address'],
-				kelurahan=ship['kelurahan'],
-				kecamatan=ship['kecamatan'],
-				kabkot=ship['kabkot'],
-				provinsi=ship['provinsi'],
-				kode_pos=ship['kode_pos'],
-				is_default=default_true)
+			customer_address = CustomerAddress.objects.get(id=data['address_id']['id'])
 			shipping = ShippingAddress.objects.create(customer_address=customer_address, order=order)
 			Pesanan.objects.create(customer=customer, order=order, shipping=shipping)
 
