@@ -30,7 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['storeline.herokuapp.com','*']
 
-AUTH_USER_MODEL = 'accounts.User'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'store.apps.StoreConfig',
-    'accounts.apps.AccountsConfig',
+    'store',
+    'accounts'
 ]
 
 MIDDLEWARE = [
@@ -74,6 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'storeline.wsgi.application'
+AUTH_USER_MODEL = 'accounts.User'
 
 
 # Database
@@ -85,12 +86,12 @@ DATABASES = {
         'OPTIONS': {
             'options': '-c search_path=store,public'
         },
-        'NAME': "d5pbe9hjcomhfe",
-        'USER': "neqljovmdrtjoc",
-        'PASSWORD': "60f42dee7a5ee2518093517403cbad92ae39043617008eda73d254fce252447e",
-        'HOST': 'ec2-54-158-232-223.compute-1.amazonaws.com',
+        'NAME': "d1b90cp4f271t8",
+        'USER': "zryvjvjrmzgocx",
+        'PASSWORD': "8536df959b7306c0f8b2b1b4ad82e3ec5e268d63168becdced8eaf1e30b7e215",
+        'HOST': 'ec2-50-17-255-120.compute-1.amazonaws.com',
         'PORT': '5432',
-        'URL' : 'postgres://neqljovmdrtjoc:60f42dee7a5ee2518093517403cbad92ae39043617008eda73d254fce252447e@ec2-54-158-232-223.compute-1.amazonaws.com:5432/d5pbe9hjcomhfe',
+        'URL' : 'postgres://zryvjvjrmzgocx:8536df959b7306c0f8b2b1b4ad82e3ec5e268d63168becdced8eaf1e30b7e215@ec2-50-17-255-120.compute-1.amazonaws.com:5432/d1b90cp4f271t8',
     }
 }
 

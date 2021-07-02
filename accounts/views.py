@@ -1,19 +1,34 @@
 from django.shortcuts import render, redirect
 from store.models import *
+from django.contrib.auth import login, authenticate
+from accounts.forms import RegistrationForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 import json
 from django.db.models import Q
 from django.http import JsonResponse
-from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
 
-def login(request):
+def loginPage(request):
 	context={}
 	return render(request, 'accounts/login.html',context)
 
 def register(request):
-	context={}
+	context ={}
+	if request.POST:
+		form = RegistrationForm(request.POST)
+		if form.is_valid():
+			form.save()
+			email = form.cleaned_data.get("email")
+			password = form.cleaned_data.get("password1")
+			account = authenticate(email=email, password=password)
+			return redirect("accounts:login")
+		else:
+			print("Yes")
+			context['form'] = form
+	else:
+		form = RegistrationForm()
+		context['form'] = form
 	return render(request, 'accounts/register.html',context)
 
 def accounts(request):
@@ -33,6 +48,7 @@ def addAddress(request):
 	customer = request.user.customer
 	new_addr = data['newAddress']
 	default = True if new_addr['is_default']=="True" else False
+	print(default)
 	if default:
 		CustomerAddress.objects.all().update(is_default=False)
 	CustomerAddress.objects.create(
@@ -65,9 +81,12 @@ def editAddress(request, id):
 		}
 		return render(request, 'accounts/edit-address.html', context)
 	elif request.method=="POST":
-		print(request.POST)
-		if request.POST['is_default'] == "True":
-			CustomerAddress.objects.all().update(is_default=False)
+		try:
+			default = True if request.POST['is_default'] == "True" else False
+			if default :
+				CustomerAddress.objects.all().update(is_default=False)
+		except:
+			default = CustomerAddress.objects.get(id=id).is_default
 		CustomerAddress.objects.filter(id=id).update(
 			address=request.POST['address'],
 			kelurahan=request.POST['kelurahan'],
@@ -75,7 +94,7 @@ def editAddress(request, id):
 			kabkot=request.POST['kabkot'],
 			provinsi=request.POST['provinsi'],
 			kode_pos=request.POST['kode_pos'],
-			is_default=True if request.POST['is_default'] == "True" else False
+			is_default= default
 			)
 		return redirect('accounts:accounts')
 

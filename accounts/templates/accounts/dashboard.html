@@ -87,7 +87,7 @@
 	                            <input class="form-control" type="text" name="kode_pos" placeholder="Kode Pos..">
 	                        </div>
 	                        <div class="form-check">
-	                            <input class="form-check-input" name="is_default" type="checkbox" value="True" id="defaultCheck1">
+	                            <input class="form-check-input" name="is_default" type="checkbox" value="False" id="defaultCheck1">
 	                            <label class="form-check-label" for="defaultCheck1">Set As Default</label>
 	                        </div>
 	                        <a id="submit-address" class="btn btn-outline-secondary">Add</a>
@@ -100,12 +100,18 @@
 </div>
 <script type="text/javascript">
     let btn = document.getElementById("form-address1")
+    let check = document.getElementById("defaultCheck1")
+    
+    check.addEventListener('change', function(){
+    	check.value="True"
+    })
 
     btn.addEventListener('click', function() {
         document.getElementById("form-wrapper").classList.remove("hidden")
         document.getElementById("form-address1").classList.add("hidden")
     })
     document.getElementById("submit-address").addEventListener('click', function(e){
+    	e.preventDefault()
         submitForm()
     })
 
