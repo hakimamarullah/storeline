@@ -7,7 +7,6 @@ from django.shortcuts import get_object_or_404
 import json
 from django.db.models import Q
 from django.http import JsonResponse
-# Create your views here.
 
 def loginPage(request):
 	context={}
