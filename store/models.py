@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from .rupiah import rupiah_format
 from django.conf import settings
 

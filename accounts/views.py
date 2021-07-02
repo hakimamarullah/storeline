@@ -23,12 +23,15 @@ def register(request):
 			account = authenticate(email=email, password=password)
 			return redirect("accounts:login")
 		else:
-			print("Yes")
 			context['form'] = form
 	else:
 		form = RegistrationForm()
 		context['form'] = form
 	return render(request, 'accounts/register.html',context)
+
+def logoutPage(request):
+	context ={}
+	return redirect("store:store")
 
 def accounts(request):
 	customer = request.user.customer

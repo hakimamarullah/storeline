@@ -10,5 +10,6 @@ urlpatterns = [
     path('del-address/<int:id>',views.deleteAddress, name='del-address'),
     path('edit-address/<int:id>',views.editAddress, name='edit-address'),
     path('login/',views.loginPage, name='login'),
-    path('register/',views.register, name='register')
+    path('register/',views.register, name='register'),
+    path('logout/',views.logoutPage, name='logout')
 ]

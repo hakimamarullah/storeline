@@ -52,6 +52,7 @@
 	      </li>
 	   {% endif %}
     </ul>
+    {% block icon %}
     <div class="form-inline my-2 my-lg-0">
     	<a href="{% url 'store:cart' %}">
 	    		<img  id="cart-icon" src="{% static 'images/cart.png' %}">
@@ -59,11 +60,12 @@
 	    <p id="cart-total">{{ cartItem }}</p>
 
 	    {% if not user.is_authenticated %}
-      		<a class="btn btn-outline-success my-2 my-sm-0" href="#" type="submit">Login</a>
+      		<a class="btn btn-outline-success my-2 my-sm-0" href="{% url 'accounts:register' %}" type="submit">Login</a>
       	{% else %}
       		<a class="btn btn-outline-success my-2 my-sm-0" href="#" type="submit">Logout</a>
       	{% endif %}
     </div>
+    {% endblock icon %}
   </div>
 </nav>
 	<hr>
