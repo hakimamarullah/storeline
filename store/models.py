@@ -7,13 +7,13 @@ User = settings.AUTH_USER_MODEL
 
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True, blank=True, on_delete= models.CASCADE)
-	firstName = models.CharField(max_length=50, null=True)
-	lastName = models.CharField(max_length=50, null=True)
+	first_name = models.CharField(max_length=50, default="Unknown")
+	last_name = models.CharField(max_length=50, default="Unknown")
 	email = models.EmailField()
 	phone = models.CharField(max_length=12, null=True, blank=True)
 
 	def __str__(self):
-		return (f"{self.firstName} {self.lastName}").title()
+		return (f"{self.first_name} {self.last_name}").title()
 
 	class Meta:
 		db_table = "customer"

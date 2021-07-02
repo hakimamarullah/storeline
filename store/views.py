@@ -16,8 +16,8 @@ def store(request):
 			cartItem = order.get_cart_items
 		except ObjectDoesNotExist:
 			customer = Customer.objects.create(user=request.user,
-				firstName=request.user.first_name,
-				lastName=request.user.last_name,
+				first_name=request.user.first_name,
+				last_name=request.user.last_name,
 				email=request.user.email)
 			order, created = Order.objects.get_or_create(customer=customer, complete=False)
 			items = order.orderitem_set.all()
@@ -112,7 +112,6 @@ def processOrder(request):
 		order.save()
 
 		ship= data['shipping']
-		print(ship)
 		if (order.shipping):
 			customer_address = CustomerAddress.objects.get(id=data['address_id']['id'])
 			shipping = ShippingAddress.objects.create(customer_address=customer_address, order=order)

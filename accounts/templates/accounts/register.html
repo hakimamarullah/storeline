@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-3">
+	<div class="col-lg-4">
+		<div class="box-element">
+				<form method="POST" action="{% url 'accounts:register' %}">
+					{% csrf_token %}
+					<div id="new-account">
+	                        <p><b>Registration Form</b></p>
+	                        <hr>
+	                        {% for field in form %}
+	                        <div class="form-field">
+	                            {{field.label_tag}}
+	                            <br>
+	                            {{field}}
+	                            {% if field.help_text %}
+	                            <br>
+	                            <small>{{ field.help_text }}</small>
+	                            {% endif %}
+	                            {% for error in field.errors %}
+	                            <br>
+	                            <li><small>{{ error }}</small></li>
+	                            {% endfor %}
+
+	                        </div>
+	                        <br>
+	                        {% endfor %}
+	                        <button style="float: right" id="submit-account" class="btn btn-outline-secondary" type="submit">Submit</button>
+	                </div>
+                </form>
+		</div>
+	</div>
+</div>
+{% endblock content %}

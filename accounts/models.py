@@ -1,94 +1,54 @@
 from django.db import models
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
-from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
-# Create your models here.
-class UserManager(BaseUserManager):
-    def create_user(self, email, username, password=None):
-        """
-        Creates and saves a User with the given email and password.
-        """
-        if not email:
-            raise ValueError('Users must have an email address')
 
-        user = self.model(
-            email=self.normalize_email(email),
-            username=username
-        )
+class AccountManager(BaseUserManager):
+	def create_user(self, email, username, password=None):
+		if not email:
+			raise ValueError("Email should not be empty")
+		if not username:
+			raise ValueError("Username should not be empty")
 
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+		user = self.model(email= self.normalize_email(email), username=username)
 
-    def create_staffuser(self, email, password, username):
-        """
-        Creates and saves a staff user with the given email and password.
-        """
-        user = self.create_user(
-            email,
-            password=password,
-            username=username
-        )
-        user.staff = True
-        user.save(using=self._db)
-        return user
+		user.set_password(password)
+		user.save(using=self._db)
+		return  user
 
-    def create_superuser(self, email, password,username):
-        """
-        Creates and saves a superuser with the given email and password.
-        """
-        user = self.create_user(email,password=password, username=username)
-        user.staff = True
-        user.admin = True
-        user.save(using=self._db)
-        return user
+	def create_superuser(self, email, username, password):
+		user = self.create_user(email=self.normalize_email(email), username=username, password=password)
+
+		user.is_admin = True
+		user.is_staff = True
+		user.is_superuser = True
+
+		user.save(using=self._db)
+		return user
 
 
 class User(AbstractBaseUser):
-	email = models.EmailField(_("email"),max_length= 50,unique=True)
-	username = models.CharField(max_length=30, unique=True)
-	first_name = models.CharField(max_length=50, blank=True)
-	last_name = models.CharField(max_length=50, blank=True)
+	email = models.EmailField(verbose_name="email", unique=True)
+	username = models.CharField(max_length=25, unique=True)
+	first_name = models.CharField(max_length=30, blank=True)
+	last_name = models.CharField(max_length=30, blank=True)
 	phone = models.CharField(max_length=12, blank=True)
-
+	date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
+	last_login = models.DateTimeField(verbose_name="last login", auto_now_add=True)
+	is_admin = models.BooleanField(default=False)
 	is_active = models.BooleanField(default=True)
-	staff = models.BooleanField(default=False) # a admin user; non super-user
-	admin = models.BooleanField(default=False) # a superuser
-
-	# notice the absence of a "Password field", that is built in.
-	objects = UserManager()
+	is_staff = models.BooleanField(default=False)
+	is_superuser = models.BooleanField(default=False)
 
 	USERNAME_FIELD = 'email'
-	REQUIRED_FIELDS = ['username'] # Email & Password are required by default.
+	REQUIRED_FIELDS = ['username']
 
-	def get_full_name(self):
-	    # The user is identified by their email address
-	    return self.email
-
-	def get_short_name(self):
-	    # The user is identified by their email address
-	    return self.email
+	objects = AccountManager()
 
 	def __str__(self):
-	    return self.email
+		return self.email
 
 	def has_perm(self, perm, obj=None):
-	    #"Does the user have a specific permission?"
-	    # Simplest possible answer: Yes, always
-	    return True
+		return self.is_admin
 
 	def has_module_perms(self, app_label):
-	    #"Does the user have permissions to view the app `app_label`?"
-	    # Simplest possible answer: Yes, always
-	    return True
-
-	@property
-	def is_staff(self):
-	    #"Is the user a member of staff?"
-	    return self.staff
-
-	@property
-	def is_admin(self):
-	    #"Is the user a admin member?"
-	    return self.admin
-
+		return True
