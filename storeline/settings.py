@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-(_9f%kk-+inti#)7%2po&ba+28o%04)k=x5!$2kxvb(@8w*=t7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['storeline.herokuapp.com','*']
+ALLOWED_HOSTS = ['storeline.herokuapp.com', '*']
 
 
 # Application definition
@@ -91,7 +91,7 @@ DATABASES = {
         'PASSWORD': "8536df959b7306c0f8b2b1b4ad82e3ec5e268d63168becdced8eaf1e30b7e215",
         'HOST': 'ec2-50-17-255-120.compute-1.amazonaws.com',
         'PORT': '5432',
-        'URL' : 'postgres://zryvjvjrmzgocx:8536df959b7306c0f8b2b1b4ad82e3ec5e268d63168becdced8eaf1e30b7e215@ec2-50-17-255-120.compute-1.amazonaws.com:5432/d1b90cp4f271t8',
+        'URL': 'postgres://zryvjvjrmzgocx:8536df959b7306c0f8b2b1b4ad82e3ec5e268d63168becdced8eaf1e30b7e215@ec2-50-17-255-120.compute-1.amazonaws.com:5432/d1b90cp4f271t8',
     }
 }
 
@@ -99,7 +99,8 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 if PRODUCTION:
     DATABASES['default'] = dj_database_url.config()
-    DATABASES['default']['OPTIONS'] = {'options': '-c search_path=store,public'}
+    DATABASES['default']['OPTIONS'] = {
+        'options': '-c search_path=store,public'}
 
 
 # Password validation
@@ -146,9 +147,9 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-STATICFILES_DIRS =[
-    os.path.join(BASE_DIR,'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/images/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')

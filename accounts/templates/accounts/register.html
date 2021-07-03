@@ -4,72 +4,74 @@
 {% endblock icon %}
 {% block content %}
 <div class="container mt-3">
-	<div class="col-lg-4">
-		<div class="box-element">
-				<form method="POST" action="{% url 'accounts:register' %}">
-					{% csrf_token %}
-					<div id="new-account">
-	                        <p><b>Registration Form</b></p>
-	                        <hr>
-	                        <div class="form-field">
-	                            {{ form.email.label }}<br>
-	                            {{ form.email }}<br>
-	                            {% for error in form.email.errors %}
-	                            	<small style="color:red;">{{error}}</small><br>
-	                            {% endfor %}
-	                        </div>
-	                         <div class="form-field">
-	                            {{ form.username.label }}
-	                            {{ form.username }}
-	                            {% for error in form.username.errors %}
-	                            	<small style="color:red;">{{error}}</small><br>
-	                            {% endfor %}
-	                        </div>
-	                         <div class="form-field">
-	                            {{ form.password1.label }}
-	                            {{ form.password1 }}
-	                            {% for error in form.password1.errors %}
-	                            	<small style="color:red;">{{error}}</small><br>
-	                            {% endfor %}
-	                        </div>
-	                         <div class="form-field">
-	                            {{ form.password2.label }}
-	                            {{ form.password2 }}<br>
-	                            {% for error in form.password2.errors %}
-	                            	<small style="color:red;">{{error}}</small><br>
-	                            {% endfor %}
-	                        </div>
-	                        <div class="form-field">
-	                            {{ form.first_name.label }}
-	                            {{ form.first_name }}<br>
-	                             {% for error in form.first_name.errors %}
-	                            	<small style="color:red;">{{error}}</small><br>
-	                            {% endfor %}
-	                        </div>
-	                        <div class="form-field">
-	                            {{ form.last_name.label }}
-	                            {{ form.last_name }}
-	                            {% for error in form.last_name.errors %}
-	                            	<small style="color:red;">{{error}}</small><br>
-	                            {% endfor %}
-	                        </div>
-	                        <div class="form-field">
-	                            {{ form.phone.label }}<br>
-	                            {{ form.phone }}<br>
-	                            {% for error in form.phone.errors %}
-	                            	<small style="color:red;">{{error}}</small><br>
-	                            {% endfor %}
-	                        </div>
-	                        <br>
-	                        <button id="submit-account" class="btn btn-outline-secondary" type="submit">Submit</button>
-	                </div>
-                </form>
-		</div>
-	</div>
+    <div class="col-lg-4">
+        <div class="box-element">
+            <form method="POST" action="{% url 'accounts:register' %}">
+                {% csrf_token %}
+                <div id="new-account">
+                    <p><b>Registration Form</b></p>
+                    <hr>
+                    <div class="form-field">
+                        {{ form.email.label }}<br>
+                        {{ form.email }}<br>
+                        {% for error in form.email.errors %}
+                        <small style="color:red;">{{error}}</small><br>
+                        {% endfor %}
+                    </div>
+                    <div class="form-field">
+                        {{ form.username.label }}
+                        {{ form.username }}
+                        {% for error in form.username.errors %}
+                        <small style="color:red;">{{error}}</small><br>
+                        {% endfor %}
+                    </div>
+                    <div class="form-field">
+                        {{ form.password1.label }}
+                        {{ form.password1 }}
+                        {% for error in form.password1.errors %}
+                        <small style="color:red;">{{error}}</small><br>
+                        {% endfor %}
+                    </div>
+                    <div class="form-field">
+                        {{ form.password2.label }}
+                        {{ form.password2 }}<br>
+                        {% for error in form.password2.errors %}
+                        <small style="color:red;">{{error}}</small><br>
+                        {% endfor %}
+                    </div>
+                    <div class="form-field">
+                        {{ form.first_name.label }}
+                        {{ form.first_name }}<br>
+                        {% for error in form.first_name.errors %}
+                        <small style="color:red;">{{error}}</small><br>
+                        {% endfor %}
+                    </div>
+                    <div class="form-field">
+                        {{ form.last_name.label }}
+                        {{ form.last_name }}
+                        {% for error in form.last_name.errors %}
+                        <small style="color:red;">{{error}}</small><br>
+                        {% endfor %}
+                    </div>
+                    <div class="form-field">
+                        {{ form.phone.label }}<br>
+                        {{ form.phone }}<br>
+                        {% for error in form.phone.errors %}
+                        <small style="color:red;">{{error}}</small><br>
+                        {% endfor %}
+                    </div>
+                    <br>
+                    <button id="submit-account" class="btn btn-outline-secondary" type="submit">Submit</button>
+                </div>
+            </form>
+            <small>Already have an account?</small>
+            <a href="{% url 'accounts:login' %}">Sign In</a>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
-	let doc = document.getElementsByTagName('input')
-	for (let field in doc)
-		doc[field].className += "form-control"
+let doc = document.getElementsByTagName('input')
+for (let field in doc)
+    doc[field].className += "form-control"
 </script>
 {% endblock content %}

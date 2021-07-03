@@ -2,36 +2,36 @@
 {% load static %}
 {% block content %}
 <div class="container mt-3">
-	<div class="box-element">
-				<form method="POST" action="{% url 'accounts:edit-address' id=id %}">
-					{% csrf_token %}
-					<div id="new-address">
-	                        <p><b>Edit Address:</b></p>
-	                        <hr>
-	                        <div class="form-field">
-	                            <input class="form-control" type="text" value="{{address.address}}" name="address" placeholder="Address..">
-	                        </div>
-	                        <div class="form-field">
-	                            <input class="form-control" type="text" value="{{address.kelurahan}}" name="kelurahan" placeholder="Kelurahan..">
-	                        <div class="form-field">
-	                            <input class="form-control" type="text" value="{{address.kecamatan}}" name="kecamatan" placeholder="Kecamatan..">
-	                        </div>
-	                        <div class="form-field">
-	                            <input class="form-control" type="text" value="{{address.kabkot}}" name="kabkot" placeholder="Kabupaten/Kota..">
-	                        </div>
-	                        <div class="form-field">
-	                            <input class="form-control" type="text" value="{{address.provinsi}}" name="provinsi" placeholder="Provinsi..">
-	                        </div>
-	                        <div class="form-field">
-	                            <input class="form-control" type="text" value="{{address.kode_pos}}" name="kode_pos" placeholder="Kode Pos..">
-	                        </div>
-	                        <div class="form-check">
-	                            <input class="form-check-input" name="is_default" type="checkbox" value="True" id="defaultCheck1">
-	                            <label class="form-check-label" for="defaultCheck1">Set As Default</label>
-	                        </div>
-	                        <button id="submit-address" class="btn btn-outline-secondary" type="submit">Submit</button>
-	                </div>
-                </form>
-			</div>
+    <div class="box-element">
+        <form method="POST" action="{% url 'accounts:edit-address' id=id %}">
+            {% csrf_token %}
+            <div id="new-address">
+                <p><b>Edit Address:</b></p>
+                <hr>
+                <div class="form-field">
+                    <input class="form-control" type="text" value="{{address.address}}" name="address" placeholder="Address..">
+                </div>
+                <div class="form-field">
+                    <input class="form-control" type="text" value="{{address.kelurahan}}" name="kelurahan" placeholder="Kelurahan..">
+                    <div class="form-field">
+                        <input class="form-control" type="text" value="{{address.kecamatan}}" name="kecamatan" placeholder="Kecamatan..">
+                    </div>
+                    <div class="form-field">
+                        <input class="form-control" type="text" value="{{address.kabkot}}" name="kabkot" placeholder="Kabupaten/Kota..">
+                    </div>
+                    <div class="form-field">
+                        <input class="form-control" type="text" value="{{address.provinsi}}" name="provinsi" placeholder="Provinsi..">
+                    </div>
+                    <div class="form-field">
+                        <input class="form-control" type="text" value="{{address.kode_pos}}" name="kode_pos" placeholder="Kode Pos..">
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" name="is_default" type="checkbox" value="True" id="defaultCheck1">
+                        <label class="form-check-label" for="defaultCheck1">Set As Default</label>
+                    </div>
+                    <button id="submit-address" class="btn btn-outline-secondary" type="submit">Submit</button>
+                </div>
+        </form>
+    </div>
 </div>
 {% endblock content %}

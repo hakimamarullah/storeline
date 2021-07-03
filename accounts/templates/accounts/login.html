@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block icon %}
+{% endblock icon %}
+{% block content %}
+<div class="container mt-3">
+    <div class="col-lg-4">
+        <div class="box-element">
+            {% for message in messages %}
+            {{message}}
+            {% endfor %}
+            <form method="POST" action="{% url 'accounts:login' %}">
+                {% csrf_token %}
+                <div id="login">
+                    <p><b>Login</b></p>
+                    <hr>
+                    {% for field in form %}
+                        <div class="form-field">
+                            {{ field.label_tag }}<br>
+                            {{field}}
+                        </div>
+                        {% for error in field.errors %}
+                        <small>{{error}}</small>
+                        {% endfor %}
+                        <br>
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div>
+                            <small style="color: red;">{{error}}</small>
+                        </div>
+                    {% endfor %}
+                    <button id="submit-account" class="btn btn-outline-secondary" type="submit">Log In</button>
+                </div>
+            </form>
+            <small>Don't have account yet?</small>
+            <a href="{% url 'accounts:register' %}">Sign Up</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+let doc = document.getElementsByTagName('input')
+for (let field in doc)
+    doc[field].className += "form-control"
+</script>
+{% endblock content %}

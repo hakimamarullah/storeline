@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+{% for message in messages %}
+<div class="alert hidden" id="{{message.tags}}" value="{{message}}" role="alert">{{message}}</div>
+{% endfor %}
 <div class="row">
     {%for product in products%}
     <div class="col-lg-4">
@@ -8,13 +11,30 @@
         <div class="box-element product">
             <h6><strong>{{ product.name.title }}</strong></h6>
             <hr>
-
-            <button  data-product={{product.id}} data-action="add" 
-            class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+            <button data-product={{product.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
             <a class="btn btn-outline-success" href="{% url 'store:view-product' id=product.id %}">View</a>
             <h4 style="display: inline-block; float: right"><strong>{{ product.price_rupiah }}</strong></h4>
         </div>
     </div>
     {% endfor %}
 </div>
+<script type="text/javascript">
+let msg = document.getElementsByClassName("alert")
+for (let i = 0; i < msg.length; i++) {
+    show(msg[i].getAttribute('value'), msg[i].getAttribute('id'))
+}
+
+function show(value, tag) {
+    setTimeout(function(){
+        $.bootstrapGrowl(value, {
+            type: tag,
+            align: 'center',
+            width: 'auto',
+            allow_dismiss: false
+        })
+    },500)
+        
+
+}
+</script>
 {% endblock content %}

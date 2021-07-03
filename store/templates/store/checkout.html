@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
- <div class="row">
-     <div class="col-lg-6">
-         <div class="box-element" id="form-wrapper">
+<div class="row">
+    <div class="col-lg-6">
+        <div class="box-element" id="form-wrapper">
             {% if messages %}
-                {% for message in messages %}
-                        <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-                {% endfor %}
+            {% for message in messages %}
+            <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+            {% endfor %}
             {% endif %}
             {% if not address %}
             <p><b>You have no address yet</b></p>
@@ -15,124 +15,126 @@
             {% else %}
             <p><b>Shipping Address:</b></p>
             <hr>
-                <p>{{address.address.title}}, {{address.kelurahan.title}}, {{address.kecamatan.title}}, {{address.kabkot.title}}, {{address.provinsi.title}}, {{address.kode_pos.title}}</p>
-                <a id="add-address" class="btn btn-outline-secondary" href="{% url 'accounts:accounts' %}">Change</a>
-             <form id="form">
-                        <div id="shipping-info" class="hidden">
-                            <div class="form-field">
-                                <input class="form-control" value="{{address.address.title}}" type="text" name="address" placeholder="Address..">
-                            </div>
-                            <div class="form-field">
-                                <input class="form-control" value="{{address.kelurahan.title}}" type="text" name="kelurahan" placeholder="Kelurahan..">
-                            </div>
-                            <div class="form-field">
-                                <input class="form-control" value="{{address.kecamatan.title}}" type="text" name="kecamatan" placeholder="Kecamatan..">
-                            </div>
-                            <div class="form-field">
-                                <input class="form-control" value="{{address.kabkot.title}}" type="text" name="kabkot" placeholder="Kabupaten/Kota..">
-                            </div>
-                            <div class="form-field">
-                                <input class="form-control" value="{{address.provinsi.title}}" type="text" name="provinsi" placeholder="Provinsi..">
-                            </div>
-                            <div class="form-field">
-                                <input class="form-control" value="{{address.kode_pos.title}}" type="text" name="kode_pos" placeholder="Kode Pos..">
-                            </div>
-                        </div>
-                    {% endif %}
-
-                    <hr>
-                    <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
-                </form>
-         </div>
-         <br>
-        
-         <div class="box-element hidden" id="payment-info">
-             <small>Paypal Options</small>
-             <button id="make-payment" >Make Payment</button>
-         </div>
-       
-
-     </div>
-     <div class="col-lg-6">
-         <div class="box-element">
-            <a class= "btn btn-outline-dark" href="{% url 'store:cart'%}">&#129092; Back To Cart</a>
+            <p>{{address.address.title}}, {{address.kelurahan.title}}, {{address.kecamatan.title}}, {{address.kabkot.title}}, {{address.provinsi.title}}, {{address.kode_pos.title}}</p>
+            <a id="add-address" class="btn btn-outline-secondary" href="{% url 'accounts:accounts' %}">Change</a>
+            <form id="form">
+                <div id="shipping-info" class="hidden">
+                    <div class="form-field">
+                        <input class="form-control" value="{{address.address.title}}" type="text" name="address" placeholder="Address..">
+                    </div>
+                    <div class="form-field">
+                        <input class="form-control" value="{{address.kelurahan.title}}" type="text" name="kelurahan" placeholder="Kelurahan..">
+                    </div>
+                    <div class="form-field">
+                        <input class="form-control" value="{{address.kecamatan.title}}" type="text" name="kecamatan" placeholder="Kecamatan..">
+                    </div>
+                    <div class="form-field">
+                        <input class="form-control" value="{{address.kabkot.title}}" type="text" name="kabkot" placeholder="Kabupaten/Kota..">
+                    </div>
+                    <div class="form-field">
+                        <input class="form-control" value="{{address.provinsi.title}}" type="text" name="provinsi" placeholder="Provinsi..">
+                    </div>
+                    <div class="form-field">
+                        <input class="form-control" value="{{address.kode_pos.title}}" type="text" name="kode_pos" placeholder="Kode Pos..">
+                    </div>
+                </div>
+                {% endif %}
+                <hr>
+                <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+            </form>
+        </div>
+        <br>
+        <div class="box-element hidden" id="payment-info">
+            <small>Paypal Options</small>
+            <button id="make-payment">Make Payment</button>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="box-element">
+            <a class="btn btn-outline-dark" href="{% url 'store:cart'%}">&#129092; Back To Cart</a>
             <hr>
             <h3><strong>Order Summary</strong></h3>
             <hr>
             {% for item in items %}
             <div class="cart-row">
                 <div style="flex:3"><img class="row-image" src="{{ item.product.imageURL}}"></div>
-                <div style="flex:3"><p>{{item.product.name}}</p></div>
-                <div style="flex:2"><p>{{item.get_total_rupiah}}</p></div>
-                <div style="flex:1"><p>x{{item.quantity}}</p></div>
+                <div style="flex:3">
+                    <p>{{item.product.name}}</p>
+                </div>
+                <div style="flex:2">
+                    <p>{{item.get_total_rupiah}}</p>
+                </div>
+                <div style="flex:1">
+                    <p>x{{item.quantity}}</p>
+                </div>
             </div>
             {% endfor %}
-            <h5>Items:  {{orders.get_cart_items}}</h5>
-            <h5>Total:  {{orders.get_cart_total_rupiah}}</h5>
-         </div>
-     </div>
- </div>
- <script type="text/javascript">
-    let shipping = '{{ orders.shipping }}'
-    let total = '{{ orders.get_cart_total }}'
-    let id = '{{address.id}}'
-    console.log(id)
-    let address_id = {'id': id}
-    let price ={'total': total}
-    if (id == ''){
-        document.getElementById("form-button").classList.add("hidden")
+            <h5>Items: {{orders.get_cart_items}}</h5>
+            <h5>Total: {{orders.get_cart_total_rupiah}}</h5>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+let shipping = '{{ orders.shipping }}'
+let total = '{{ orders.get_cart_total }}'
+let id = '{{address.id}}'
+console.log(id)
+let address_id = { 'id': id }
+let price = { 'total': total }
+if (id == '') {
+    document.getElementById("form-button").classList.add("hidden")
+}
+
+let form = document.getElementById("form")
+form.addEventListener('submit', function(e) {
+    e.preventDefault()
+    document.getElementById("form-button").classList.add("hidden")
+    document.getElementById("payment-info").classList.remove("hidden")
+})
+document.getElementById("make-payment").addEventListener('click', function(e) {
+    submitForm()
+})
+
+function submitForm() {
+    let shippingInfo = {
+        'address': null,
+        'kelurahan': null,
+        'kecamatan': null,
+        'kabkot': null,
+        'provinsi': null,
+        'kode_pos': null,
     }
 
-    let form = document.getElementById("form")
-    form.addEventListener('submit', function(e) {
-        e.preventDefault()
-        document.getElementById("form-button").classList.add("hidden")
-        document.getElementById("payment-info").classList.remove("hidden")
-    })
-    document.getElementById("make-payment").addEventListener('click', function(e){
-        submitForm()
-    })
+    if (shipping != "False") {
+        shippingInfo.address = form.address.value
+        shippingInfo.kelurahan = form.kelurahan.value
+        shippingInfo.kecamatan = form.kecamatan.value
+        shippingInfo.kabkot = form.kabkot.value
+        shippingInfo.provinsi = form.provinsi.value
+        shippingInfo.kode_pos = form.kode_pos.value
 
-    function submitForm(){
-        let shippingInfo ={
-            'address': null,
-            'kelurahan': null,
-            'kecamatan': null,
-            'kabkot': null,
-            'provinsi': null,
-            'kode_pos': null,
-        }
-
-        if (shipping != "False"){
-            shippingInfo.address = form.address.value
-            shippingInfo.kelurahan = form.kelurahan.value
-            shippingInfo.kecamatan = form.kecamatan.value
-            shippingInfo.kabkot = form.kabkot.value
-            shippingInfo.provinsi = form.provinsi.value
-            shippingInfo.kode_pos = form.kode_pos.value
-            
-        }
-
-        url = '/process-order/'
-
-    fetch(url,{
-        method:'POST',
-        headers:{
-            'Content-Type':'application/json',
-            'X-CSRFToken': csrftoken,
-        },
-        body: JSON.stringify({'shipping':shippingInfo,'address_id': address_id, 'price': price})
-    })
-
-    .then((response)=>{
-        return response.json()
-    })
-
-    .then((data)=>{
-        console.log(data)
-        alert("Order Completed")
-        window.location.href = "{% url 'store:store' %}"
-    })
     }
- </script>
+
+    url = '/process-order/'
+
+    fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({ 'shipping': shippingInfo, 'address_id': address_id, 'price': price })
+        })
+
+        .then((response) => {
+            return response.json()
+        })
+
+        .then((data) => {
+            console.log(data)
+            alert("Order Completed")
+            window.location.href = "{% url 'store:store' %}"
+        })
+}
+</script>
 {% endblock content %}
