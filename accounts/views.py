@@ -11,7 +11,7 @@ from django.http import JsonResponse
 
 def loginPage(request):
     form = LoginForm()
-    context={}
+    context = {}
     if request.user.is_authenticated:
         return redirect("store:store")
     if request.POST:
@@ -22,12 +22,13 @@ def loginPage(request):
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request,"You're logged in as " + request.user.username)
+                messages.success(
+                    request, "You're logged in as " + request.user.username)
                 return redirect("store:store")
             else:
                 context['form'] = LoginForm()
     else:
-        context['form']= LoginForm()
+        context['form'] = LoginForm()
     context['form'] = form
     return render(request, 'accounts/login.html', context)
 
@@ -49,7 +50,7 @@ def register(request):
 
 def logoutPage(request):
     logout(request)
-    messages.info(request,"You're logged out")
+    messages.info(request, "You're logged out")
     return redirect("store:store")
 
 
