@@ -155,7 +155,7 @@ def viewProducts(request, id):
             cartItem = order.get_cart_items
 
     else:
-        cartItem = {'get_cart_items': 0}
+        cartItem = 0
     context = {
         'product': product,
         'cartItem': cartItem
